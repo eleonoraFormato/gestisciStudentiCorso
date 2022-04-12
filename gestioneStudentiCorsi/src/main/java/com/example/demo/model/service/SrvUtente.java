@@ -1,0 +1,21 @@
+package com.example.demo.model.service;
+
+
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.example.demo.controller.dto.UtenteDTO;
+import com.example.demo.controller.response.ResponseUtente;
+import com.example.demo.model.Utente;
+
+@Service
+public interface SrvUtente {
+	public ResponseUtente create(UtenteDTO utenzaDto);
+	public Utente findById(Integer id);
+	
+	public String delete (Integer id);
+	
+	public Utente findByeMailAndPassword(String eMail, String password);
+	public List<Utente> findAll();
+}
