@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.Response;
 import com.example.demo.controller.dto.CorsoDTO;
-import com.example.demo.controller.response.ResponseCorso;
 import com.example.demo.model.Corso;
 import com.example.demo.model.repository.RepCorso;
 
@@ -15,17 +15,20 @@ public class SrvCorsoImpl implements SrvCorso{
 	@Autowired
 	RepCorso repCorso;
 
+	Response<CorsoDTO> response;
+	List<CorsoDTO> listaCorso;
+	
 	@Override
-	public ResponseCorso create(CorsoDTO corsoDto) {
-		ResponseCorso response = new ResponseCorso();
+	public Response<CorsoDTO> create(CorsoDTO corsoDto) {
 		try {
 		Corso corso = corsoDto.cambiaTipoFromDto(corsoDto);
-		response.setCorsoDTO(corsoDto.cambiaTipoToDto(this.repCorso.save(corso)));
-		response.setMsg("Caricamento Anagrafica riuscito con successo!");
+		listaCorso = response.aggiungi(corsoDto.cambiaTipoToDto(this.repCorso.save(corso)));
+		response.setLista(listaCorso);
+		response.setMsg("Caricamento Corso riuscito con successo!");
 		}
 		catch(Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setCorsoDTO(null);
+			response.setLista(null);
 		}
 		
 		return response;

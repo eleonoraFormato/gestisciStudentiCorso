@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.Response;
 import com.example.demo.controller.dto.AnagraficaDTO;
-import com.example.demo.controller.response.ResponseAnagrafica;
 import com.example.demo.model.Anagrafica;
 import com.example.demo.model.repository.RepAnagrafica;
 
@@ -14,7 +14,10 @@ import com.example.demo.model.repository.RepAnagrafica;
 public class SrvAnagraficaImpl implements SrvAnagrafica {
 	@Autowired
 	RepAnagrafica repAnagrafica;
-
+	
+	Response <AnagraficaDTO> response;
+	List<AnagraficaDTO> listaAnagrafica;
+	
 	@Override
 	public Anagrafica findById(Integer id) {
 		return this.repAnagrafica.findById(id).get();
@@ -22,14 +25,14 @@ public class SrvAnagraficaImpl implements SrvAnagrafica {
 	}
 
 	@Override
-	public ResponseAnagrafica create(AnagraficaDTO anagraficaDto) {
-		ResponseAnagrafica response = new ResponseAnagrafica();
+	public Response<AnagraficaDTO> create(AnagraficaDTO anagraficaDto) {
 		try {
 		if (anagraficaDto.getCodiceFiscale().length() == 16) 
 		{
 			Anagrafica anagrafica = anagraficaDto.cambiaTipoFromDto(anagraficaDto);
 			if (this.repAnagrafica.findByCodiceFiscale(anagraficaDto.getCodiceFiscale())== null) {
-				response.setAnagraficaDTO(anagraficaDto.cambiaTipoToDto(this.repAnagrafica.save(anagrafica)));
+				listaAnagrafica = response.aggiungi(anagraficaDto.cambiaTipoToDto(this.repAnagrafica.save(anagrafica)));
+				response.setLista(listaAnagrafica);
 				response.setMsg("Caricamento Anagrafica riuscito con successo!");
 			}
 
@@ -43,7 +46,7 @@ public class SrvAnagraficaImpl implements SrvAnagrafica {
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setAnagraficaDTO(null);
+			response.setLista(null);
 
 		}
 		return response;

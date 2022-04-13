@@ -6,8 +6,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.Response;
 import com.example.demo.controller.dto.UtenteDTO;
-import com.example.demo.controller.response.ResponseUtente;
 import com.example.demo.model.Utente;
 import com.example.demo.model.repository.RepUtente;
 
@@ -17,6 +17,9 @@ public class SrvUtenteImpl implements SrvUtente {
 	RepUtente repUtente;
 	@Autowired
 	SrvAnagrafica srvAnagrafica;
+	
+	Response<UtenteDTO> response;
+	List<UtenteDTO>lista;
 	
 	@Override
 	public Utente findById(Integer id) {
@@ -54,17 +57,17 @@ public class SrvUtenteImpl implements SrvUtente {
 	}
 
 	@Override
-	public ResponseUtente create(UtenteDTO utenteDto) {
-		ResponseUtente response = new ResponseUtente();
+	public Response<UtenteDTO>create(UtenteDTO utenteDto) {
 		try {
 			Utente utente = utenteDto.cambiaTipoFromDto(utenteDto);
 			utente.setId(utenteDto.getId());
 			utente.setAnagrafica(this.srvAnagrafica.findById(utenteDto.getIdAnagrafica()));
-			response.setUtenteDTO(utenteDto.cambiaTipoToDto(this.repUtente.save(utente)));
+			lista = response.aggiungi(utenteDto.cambiaTipoToDto(this.repUtente.save(utente)));
+			response.setLista(lista);
 			response.setMsg("Caricamento Utente riuscito con successo!");
 		} catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setUtenteDTO(null);
+			response.setLista(null);
 		}
 
 		return response;

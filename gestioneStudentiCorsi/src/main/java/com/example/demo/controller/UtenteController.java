@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -16,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import com.example.demo.controller.dto.UtenteDTO;
-import com.example.demo.controller.response.ResponseUtente;
 import com.example.demo.model.Utente;
 import com.example.demo.model.repository.RepUtente;
 import com.example.demo.model.service.SrvUtente;
@@ -29,10 +27,11 @@ public class UtenteController {
 	@Autowired
 	RepUtente repUtente;
 	UtenteDTO utenteDto = new UtenteDTO();
-	ResponseUtente response = new ResponseUtente();
+	Response<UtenteDTO> response;
+	List<UtenteDTO> lista;
 	
 	@PostMapping("/save")
-	public @ResponseBody ResponseUtente save (@RequestBody UtenteDTO utenteDto) {
+	public @ResponseBody Response<UtenteDTO> save (@RequestBody UtenteDTO utenteDto) {
 		try {
 			response = srvUtente.create(utenteDto);
 
@@ -44,11 +43,12 @@ public class UtenteController {
 	}
 	
 	@GetMapping("/get/{id}")
-	public @ResponseBody ResponseUtente get (@PathVariable Integer id) {
+	public @ResponseBody Response<UtenteDTO> get (@PathVariable Integer id) {
 		try {
 			if (repUtente.existsById(id)) {
 				response.setMsg("A questo id corrisponde questa  ");
-				response.setUtenteDTO(utenteDto.cambiaTipoToDto(srvUtente.findById(id)));
+				lista = response.aggiungi(utenteDto.cambiaTipoToDto(srvUtente.findById(id)));
+				response.setLista(lista);
 			} else {
 
 				response.setMsg("Non esiste un'utente correlata all'id selezionato, riprova!");
@@ -61,38 +61,41 @@ public class UtenteController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public @ResponseBody ResponseUtente delete (@PathVariable Integer id) {
+	public @ResponseBody Response<UtenteDTO> delete (@PathVariable Integer id) {
 		try {
 			if (repUtente.existsById(id)) {
-				response.setUtenteDTO(utenteDto.cambiaTipoToDto(srvUtente.findById(id)));
+				lista = response.aggiungi(utenteDto.cambiaTipoToDto(srvUtente.findById(id)));
+				response.setLista(lista);
 	 			response.setMsg(srvUtente.delete(id));
 			}
 			else {
 
 				response.setMsg("Non esiste un'utente correlata all'id selezionato, riprova!");
+				response.setLista(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setUtenteDTO(null);
+			response.setLista(null);
 
 		}
 		return response;
 
 	}
 	@GetMapping("/get")
-	public @ResponseBody List<UtenteDTO>  getAll () {
+	public @ResponseBody Response<UtenteDTO>  getAll () {
 		
-		List<UtenteDTO> lista = new ArrayList<>();
 		try {
 			
 			
 			for (Utente a:srvUtente.findAll())
-				lista.add(utenteDto.cambiaTipoToDto(a));	
+				lista.add(utenteDto.cambiaTipoToDto(a));
+			response.setLista(lista);
+			response.setMsg("Ecco una lista di tutti gli Utenti! ");
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
 		}
-		return lista;
+		return response;
 	}
 }

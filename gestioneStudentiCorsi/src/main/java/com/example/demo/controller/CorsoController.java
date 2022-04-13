@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.CorsoDTO;
-import com.example.demo.controller.response.ResponseCorso;
 import com.example.demo.model.Corso;
 import com.example.demo.model.repository.RepCorso;
 import com.example.demo.model.service.SrvCorso;
@@ -27,11 +26,11 @@ public class CorsoController {
 	@Autowired
 	RepCorso repCorso;
 	CorsoDTO corsoDto = new CorsoDTO();
-	ResponseCorso response = new ResponseCorso();
-	
+	Response<CorsoDTO> response;
+	List<CorsoDTO> lista;
 	
 	@PostMapping("/save")
-	public   @ResponseBody ResponseCorso save (@RequestBody CorsoDTO corsoDto) {
+	public   @ResponseBody Response<CorsoDTO> save (@RequestBody CorsoDTO corsoDto) {
 		try {
 			response = srvCorso.create(corsoDto);
 
@@ -42,12 +41,14 @@ public class CorsoController {
 
 	}
 	@GetMapping("/get/{id}")
-	public @ResponseBody ResponseCorso get (@PathVariable Integer id) {
+	public @ResponseBody Response<CorsoDTO> get (@PathVariable Integer id) {
 
 		try {
 			if (repCorso.existsById(id)) {
 				response.setMsg("A questo id corrisponde questo  ");
-				response.setCorsoDTO(corsoDto.cambiaTipoToDto(srvCorso.findById(id)));
+				lista = response.aggiungi(corsoDto.cambiaTipoToDto(srvCorso.findById(id)));
+				response.setLista(lista);
+
 			} else {
 
 				response.setMsg("Non esiste un corso correlato all'id selezionato, riprova!");
@@ -61,36 +62,38 @@ public class CorsoController {
 		
 	
 	@DeleteMapping("/delete/{id}")
-	public  @ResponseBody ResponseCorso delete (@PathVariable Integer id) {
+	public  @ResponseBody Response<CorsoDTO> delete (@PathVariable Integer id) {
 		try {
 			if (repCorso.existsById(id)) {
-				response.setCorsoDTO(corsoDto.cambiaTipoToDto(srvCorso.findById(id)));
+				lista = response.aggiungi(corsoDto.cambiaTipoToDto(srvCorso.findById(id)));
+				response.setLista(lista);
 	 			response.setMsg(srvCorso.delete(id));
 			}
 			else {
 				response.setMsg("Non esiste un corso correlato all'id selezionato, riprova!");
-				response.setCorsoDTO(null);
+				response.setLista(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setCorsoDTO(null);
+			response.setLista(null);
 
 		}
 		return response;
 
 	}
 	@GetMapping("/get")
-	public @ResponseBody List<CorsoDTO>  getAll () {
-		List<CorsoDTO> lista = new ArrayList<>();
+	public @ResponseBody Response<CorsoDTO>  getAll () {
 		try {
 			
 			for (Corso a:srvCorso.findAll())
 				lista.add(corsoDto.cambiaTipoToDto(a));	
+			response.setLista(lista);
+			response.setMsg("Ecco tutte i Corsi!");
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
 		}
-		return lista;
+		return response;
 	}
 }

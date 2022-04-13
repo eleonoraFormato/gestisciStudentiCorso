@@ -1,6 +1,6 @@
 package com.example.demo.controller;
 
-import java.util.ArrayList;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.EsameDTO;
-import com.example.demo.controller.response.ResponseEsame;
 import com.example.demo.model.Esame;
 import com.example.demo.model.repository.RepEsame;
 import com.example.demo.model.service.SrvEsame;
@@ -27,10 +26,11 @@ public class EsameController {
 	@Autowired
 	RepEsame repEsame;
 	EsameDTO esameDto = new EsameDTO();
-	ResponseEsame response = new ResponseEsame();
+	Response<EsameDTO> response;
+	List<EsameDTO> lista;
 	
 	@PostMapping("/save")
-	public @ResponseBody ResponseEsame save (@RequestBody EsameDTO esameDto) {
+	public @ResponseBody Response<EsameDTO> save (@RequestBody EsameDTO esameDto) {
 		try {
 			response = srvEsame.create(esameDto);
 
@@ -41,12 +41,13 @@ public class EsameController {
 
 	}
 	@GetMapping("/get/{id}")
-	public @ResponseBody ResponseEsame get (@PathVariable Integer id) {
+	public @ResponseBody Response<EsameDTO> get (@PathVariable Integer id) {
 		
 		try {
 			if (repEsame.existsById(id)) {
 				response.setMsg("A questo id corrisponde questo  ");
-				response.setEsameDTO(esameDto.cambiaTipoToDto(srvEsame.findById(id)));
+				lista = response.aggiungi(esameDto.cambiaTipoToDto(srvEsame.findById(id)));
+				response.setLista(lista);
 			} else {
 
 				response.setMsg("Non esiste un esame correlato all'id selezionato, riprova!");
@@ -59,37 +60,39 @@ public class EsameController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public  @ResponseBody ResponseEsame delete (@PathVariable Integer id) {
+	public  @ResponseBody Response<EsameDTO> delete (@PathVariable Integer id) {
 		try {
 			if (repEsame.existsById(id)) {
-				response.setEsameDTO(esameDto.cambiaTipoToDto(srvEsame.findById(id)));
+				lista = response.aggiungi(esameDto.cambiaTipoToDto(srvEsame.findById(id)));
+				response.setLista(lista);
 	 			response.setMsg(srvEsame.delete(id));
 			}
 			else {
 				response.setMsg("Non esiste un esame correlato all'id selezionato, riprova!");
-				response.setEsameDTO(null);
+				response.setLista(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setEsameDTO(null);
+			response.setLista(null);
 
 		}
 		return response;
 
 	}
 	@GetMapping("/get")
-	public @ResponseBody List<EsameDTO>  getAll () {
+	public @ResponseBody Response<EsameDTO> getAll () {
 		
-		List<EsameDTO> lista = new ArrayList<>();
 		try {
 			
 			for (Esame a:srvEsame.findAll())
-				lista.add(esameDto.cambiaTipoToDto(a));	
+				lista.add(esameDto.cambiaTipoToDto(a));
+			response.setLista(lista);
+			response.setMsg("Ecco la lista di tutti gli esami!");
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
 		}
-		return lista;
+		return response;
 	}
 }

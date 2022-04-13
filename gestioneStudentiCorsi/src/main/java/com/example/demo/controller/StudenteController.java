@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.StudenteDTO;
-import com.example.demo.controller.response.ResponseStudente;
 import com.example.demo.model.Studente;
 import com.example.demo.model.repository.RepStudente;
 import com.example.demo.model.service.SrvStudente;
@@ -27,10 +26,11 @@ public class StudenteController {
 	@Autowired
 	RepStudente repStudente;
 	StudenteDTO studenteDto = new StudenteDTO();
-	ResponseStudente response = new ResponseStudente();
+	Response<StudenteDTO> response;
+	List <StudenteDTO> lista;
 	
 	@PostMapping("/save")
-	public @ResponseBody ResponseStudente save (@RequestBody StudenteDTO studenteDto) {
+	public @ResponseBody Response<StudenteDTO> save (@RequestBody StudenteDTO studenteDto) {
 		try {
 			response = srvStudente.create(studenteDto);
 
@@ -41,12 +41,13 @@ public class StudenteController {
 
 	}
 	@GetMapping("/get/{id}")
-	public @ResponseBody ResponseStudente get (@PathVariable Integer id) {
+	public @ResponseBody Response<StudenteDTO> get (@PathVariable Integer id) {
 		
 		try {
 			if (repStudente.existsById(id)) {
 				response.setMsg("A questo id corrisponde questa  ");
-				response.setStudenteDTO(studenteDto.cambiaTipoToDto(srvStudente.findById(id)));
+				lista = response.aggiungi(studenteDto.cambiaTipoToDto(srvStudente.findById(id)));
+				response.setLista(lista);
 			} else {
 
 				response.setMsg("Non esiste un'studente correlata all'id selezionato, riprova!");
@@ -59,37 +60,40 @@ public class StudenteController {
 	}
 	
 	@DeleteMapping("/delete/{id}")
-	public @ResponseBody ResponseStudente delete (@PathVariable Integer id) {
+	public @ResponseBody Response<StudenteDTO> delete (@PathVariable Integer id) {
 		try {
 			if (repStudente.existsById(id)) {
-				response.setStudenteDTO(studenteDto.cambiaTipoToDto(srvStudente.findById(id)));
+				lista = response.aggiungi(studenteDto.cambiaTipoToDto(srvStudente.findById(id)));
+				response.setLista(lista);
 	 			response.setMsg(srvStudente.delete(id));
 			}
 			else {
 
 				response.setMsg("Non esiste un'studente correlata all'id selezionato, riprova!");
+				response.setLista(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setStudenteDTO(null);
-
+			response.setLista(null);
 		}
 		return response;
 	}
 	@GetMapping("/get")
-	public @ResponseBody List<StudenteDTO>  getAll () {
+	public @ResponseBody Response<StudenteDTO>  getAll () {
 
 		List<StudenteDTO> lista = new ArrayList<>();
 		try {
 			
 			
 			for (Studente a:srvStudente.findAll())
-				lista.add(studenteDto.cambiaTipoToDto(a));	
+				lista.add(studenteDto.cambiaTipoToDto(a));
+			response.setLista(lista);
+			response.setMsg("Ecco una lista con tutti gli Studenti! ");
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
 		}
-		return lista;
+		return response;
 	}
 }

@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.example.demo.controller.Response;
 import com.example.demo.controller.dto.StatoPagamentoDTO;
-import com.example.demo.controller.response.ResponseStatoPagamento;
 import com.example.demo.model.StatoPagamento;
 import com.example.demo.model.repository.RepStatoPagamento;
 
@@ -14,19 +14,21 @@ import com.example.demo.model.repository.RepStatoPagamento;
 public class SrvStatoPagamentoImpl implements SrvStatoPagamento {
 	@Autowired
 	RepStatoPagamento repStatoPagamento;
+	Response<StatoPagamentoDTO> response;
+	List<StatoPagamentoDTO>lista;
 
 	@Override
-	public ResponseStatoPagamento create(StatoPagamentoDTO statoPagamentoDto) {
+	public Response<StatoPagamentoDTO> create(StatoPagamentoDTO statoPagamentoDto) {
 		
-		ResponseStatoPagamento response = new ResponseStatoPagamento();
 		try {
 		StatoPagamento statoPagamento = statoPagamentoDto.cambiaTipoFromDto(statoPagamentoDto);
-		response.setStatoPagamentoDTO(statoPagamentoDto.cambiaTipoToDto(this.repStatoPagamento.save(statoPagamento)));
+		lista = response.aggiungi(statoPagamentoDto.cambiaTipoToDto(this.repStatoPagamento.save(statoPagamento)));
+		response.setLista(lista);
 		response.setMsg("Caricamento Stato Pagamento riuscito con successo!");
 		}
 		catch(Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setStatoPagamentoDTO(null);
+			response.setLista(null);
 		}
 		
 		return response;
