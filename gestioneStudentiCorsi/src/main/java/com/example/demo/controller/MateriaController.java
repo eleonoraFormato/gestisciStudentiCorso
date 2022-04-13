@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,8 @@ public class MateriaController {
 	@Autowired
 	RepMateria repMateria;
 	MateriaDTO materiaDto = new MateriaDTO();
-	Response<MateriaDTO> response;
-	List<MateriaDTO> lista;
-	
+	Response<MateriaDTO> response= new Response<>();
+	List<MateriaDTO> lista= new ArrayList<>();
 	@PostMapping("/save")
 	public @ResponseBody Response<MateriaDTO> save (@RequestBody MateriaDTO materiaDto) {
 		try {

@@ -5,6 +5,7 @@ import java.util.List;
 public class Response <T>{
 	private String msg;
 	private List <T> lista;
+	
 	public String getMsg() {
 		return msg;
 	}

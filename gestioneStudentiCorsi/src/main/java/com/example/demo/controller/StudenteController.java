@@ -26,8 +26,8 @@ public class StudenteController {
 	@Autowired
 	RepStudente repStudente;
 	StudenteDTO studenteDto = new StudenteDTO();
-	Response<StudenteDTO> response;
-	List <StudenteDTO> lista;
+	Response<StudenteDTO> response= new Response<>();
+	List <StudenteDTO> lista= new ArrayList<>();
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<StudenteDTO> save (@RequestBody StudenteDTO studenteDto) {

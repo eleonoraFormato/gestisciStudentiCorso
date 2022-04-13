@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -27,8 +28,8 @@ public class UtenteController {
 	@Autowired
 	RepUtente repUtente;
 	UtenteDTO utenteDto = new UtenteDTO();
-	Response<UtenteDTO> response;
-	List<UtenteDTO> lista;
+	Response<UtenteDTO> response= new Response<>();
+	List<UtenteDTO> lista= new ArrayList<>();
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<UtenteDTO> save (@RequestBody UtenteDTO utenteDto) {

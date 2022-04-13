@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,8 +28,8 @@ public class StatoPagamentoController {
 	RepStatoPagamento repStatoPagamento;
 	StatoPagamentoDTO statoPagamentoDto = new StatoPagamentoDTO();
 	
-	Response<StatoPagamentoDTO> response;
-	List<StatoPagamentoDTO> lista;
+	Response<StatoPagamentoDTO> response= new Response<>();
+	List<StatoPagamentoDTO> lista= new ArrayList<>();
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<StatoPagamentoDTO> save (@RequestBody StatoPagamentoDTO statoPagamentoDto) {

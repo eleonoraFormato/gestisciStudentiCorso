@@ -1,5 +1,6 @@
 package com.example.demo.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.AnagraficaDTO;
+import com.example.demo.controller.Response;
 import com.example.demo.model.Anagrafica;
 import com.example.demo.model.repository.RepAnagrafica;
 import com.example.demo.model.service.SrvAnagrafica;
@@ -26,8 +28,8 @@ public class AnagraficaController {
 	@Autowired
 	RepAnagrafica repAnagrafica;
 	AnagraficaDTO anagraficaDto = new AnagraficaDTO();
-	Response<AnagraficaDTO> response;
-	List<AnagraficaDTO> lista;
+	Response<AnagraficaDTO> response= new Response<>();
+	List<AnagraficaDTO> lista= new ArrayList<>();
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<AnagraficaDTO> save(@RequestBody AnagraficaDTO anagraficaDto) {
