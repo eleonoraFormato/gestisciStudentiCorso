@@ -65,7 +65,7 @@ public class UtenteDTO {
 		super();
 	}
 	
-	public UtenteDTO cambiaTipoToDto (Utente utente) {
+	public static UtenteDTO cambiaTipoToDto (Utente utente) {
 		UtenteDTO utenteDto = new UtenteDTO();
 		utenteDto.setId(utente.getId());
 		utenteDto.seteMail(utente.geteMail());
@@ -75,7 +75,7 @@ public class UtenteDTO {
 		return utenteDto;
 		}
 	
-	public Utente cambiaTipoFromDto (UtenteDTO utenteDto) {
+	public static Utente cambiaTipoFromDto (UtenteDTO utenteDto) {
 		
 		Utente utente = new Utente();
 		utente.setId(utenteDto.getId());

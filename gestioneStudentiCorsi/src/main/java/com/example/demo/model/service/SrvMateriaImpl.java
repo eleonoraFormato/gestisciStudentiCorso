@@ -14,10 +14,6 @@ import com.example.demo.model.repository.RepMateria;
 public class SrvMateriaImpl implements SrvMateria {
 	@Autowired
 	RepMateria repMateria;
-	
-	Response<MateriaDTO> response;
-	List<MateriaDTO> lista;
-
 
 	@Override
 	public Materia findById(Integer id) {
@@ -49,18 +45,22 @@ public class SrvMateriaImpl implements SrvMateria {
 
 	@Override
 	public Response<MateriaDTO> create(MateriaDTO materiaDto) {
+		Response<MateriaDTO> response = new Response <>();
 		try {
-		Materia materia = materiaDto.cambiaTipoFromDto(materiaDto);
-		lista = response.aggiungi(materiaDto.cambiaTipoToDto(this.repMateria.save(materia)));
-		response.setLista(lista);
+		response.setData(MateriaDTO.cambiaTipoToDto(this.repMateria.save(MateriaDTO.cambiaTipoFromDto(materiaDto))));
 		response.setMsg("Caricamento Materia riuscito con successo!");
 		}
 		catch(Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 		
 		return response;
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return this.repMateria.existsById(id);
 	}
 }
 

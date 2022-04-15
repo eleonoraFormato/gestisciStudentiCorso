@@ -20,8 +20,6 @@ public class SrvEsameImpl implements SrvEsame {
 	SrvStudente srvStudente;
 	@Autowired
 	SrvMateria srvMateria;
-	Response<EsameDTO> response;
-	List<EsameDTO> listaEsame;
 
 	@Override
 	public Esame findById(Integer id) {
@@ -54,20 +52,24 @@ public class SrvEsameImpl implements SrvEsame {
 
 	@Override
 	public Response<EsameDTO> create(EsameDTO esameDto) {
-
+		Response<EsameDTO> response = new Response<>();
 		try {
-			Esame esame = esameDto.cambiaTipoFromDto(esameDto);
+			Esame esame = EsameDTO.cambiaTipoFromDto(esameDto);
 			esame.setStudente(srvStudente.findById(esameDto.getIdStudente()));
 			esame.setMateria(srvMateria.findById(esameDto.getId()));
 			esame.setCorso(srvCorso.findById(esameDto.getId()));
-			listaEsame = response.aggiungi(esameDto.cambiaTipoToDto(this.repEsame.save(esame)));
-			response.setLista(listaEsame);
+			response.setData(EsameDTO.cambiaTipoToDto(this.repEsame.save(esame)));
 			response.setMsg("Caricamento Esame riuscito con successo!");
 		} catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 
 		return response;
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return this.repEsame.existsById(id);
 	}
 }

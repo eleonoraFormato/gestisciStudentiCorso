@@ -58,7 +58,7 @@ public class CorsoDTO {
 	public CorsoDTO() {
 		super();
 	}
-	public CorsoDTO cambiaTipoToDto (Corso corso) {
+	public static CorsoDTO cambiaTipoToDto (Corso corso) {
 		
 		CorsoDTO corsoDto = new CorsoDTO();
 		corsoDto.setId(corso.getId());
@@ -69,7 +69,7 @@ public class CorsoDTO {
 		return corsoDto;
 	}
 	
-	public Corso cambiaTipoFromDto (CorsoDTO corsoDto) {
+	public static Corso cambiaTipoFromDto (CorsoDTO corsoDto) {
 		
 		Corso corso = new Corso();
 		corso.setId(corsoDto.getId());

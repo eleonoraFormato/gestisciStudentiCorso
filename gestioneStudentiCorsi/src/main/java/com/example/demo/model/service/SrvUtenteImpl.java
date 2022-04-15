@@ -17,9 +17,7 @@ public class SrvUtenteImpl implements SrvUtente {
 	RepUtente repUtente;
 	@Autowired
 	SrvAnagrafica srvAnagrafica;
-	
-	Response<UtenteDTO> response;
-	List<UtenteDTO>lista;
+
 	
 	@Override
 	public Utente findById(Integer id) {
@@ -57,19 +55,25 @@ public class SrvUtenteImpl implements SrvUtente {
 	}
 
 	@Override
-	public Response<UtenteDTO>create(UtenteDTO utenteDto) {
+	public Response<UtenteDTO>create(UtenteDTO utenteDTO) {
+
+		Response<UtenteDTO> response = new Response<>();
 		try {
-			Utente utente = utenteDto.cambiaTipoFromDto(utenteDto);
-			utente.setId(utenteDto.getId());
-			utente.setAnagrafica(this.srvAnagrafica.findById(utenteDto.getIdAnagrafica()));
-			lista = response.aggiungi(utenteDto.cambiaTipoToDto(this.repUtente.save(utente)));
-			response.setLista(lista);
+			Utente utente = UtenteDTO.cambiaTipoFromDto(utenteDTO);
+			utente.setId(utenteDTO.getId());
+			utente.setAnagrafica(this.srvAnagrafica.findById(utenteDTO.getIdAnagrafica()));
+			response.setData(UtenteDTO.cambiaTipoToDto(this.repUtente.save(utente)));
 			response.setMsg("Caricamento Utente riuscito con successo!");
 		} catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 
 		return response;
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return this.repUtente.existsById(id);
 	}
 }

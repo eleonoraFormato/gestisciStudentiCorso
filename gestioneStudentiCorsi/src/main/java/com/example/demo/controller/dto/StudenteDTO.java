@@ -61,7 +61,7 @@ public class StudenteDTO {
 		super();
 	}
 	
-	public StudenteDTO cambiaTipoToDto (Studente studente) {
+	public static StudenteDTO cambiaTipoToDto (Studente studente) {
 		StudenteDTO studenteDto = new StudenteDTO();
 		studenteDto.setId(studente.getId());
 		studenteDto.setDataIscrizione(studente.getDataIscrizione());
@@ -71,7 +71,7 @@ public class StudenteDTO {
 		return studenteDto;
 		}
 	
-	public Studente cambiaTipoFromDto (StudenteDTO studenteDto) {
+	public static Studente cambiaTipoFromDto (StudenteDTO studenteDto) {
 		Studente studente = new Studente();		
 		studente.setId(studenteDto.getId());
 		studente.setDataIscrizione(studenteDto.getDataIscrizione());	

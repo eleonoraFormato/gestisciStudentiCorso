@@ -13,7 +13,7 @@ import com.example.demo.model.StatoPagamento;
 public interface SrvStatoPagamento {
 	public Response<StatoPagamentoDTO> create(StatoPagamentoDTO statoPagamentoDto);
 	public StatoPagamento findById(Integer id);
-	
+	public Boolean existsById (Integer id);
 	public String delete (Integer id);
 	public List<StatoPagamento> findAll();
 }

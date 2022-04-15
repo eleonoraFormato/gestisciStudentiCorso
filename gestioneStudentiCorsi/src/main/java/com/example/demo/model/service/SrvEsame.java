@@ -13,7 +13,7 @@ import com.example.demo.model.Esame;
 public interface SrvEsame {
 	public Response<EsameDTO> create(EsameDTO esameDto);
 	public Esame findById(Integer id);
-	
+	public Boolean existsById (Integer id);
 	public String delete (Integer id);
 	public List<Esame> findAll();
 }

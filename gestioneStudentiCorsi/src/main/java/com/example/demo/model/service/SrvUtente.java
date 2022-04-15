@@ -12,10 +12,9 @@ import com.example.demo.model.Utente;
 @Service
 public interface SrvUtente {
 	public Response<UtenteDTO> create(UtenteDTO utenzaDto);
-	public Utente findById(Integer id);
-	
+	public Utente findById(Integer id);	
 	public String delete (Integer id);
-	
+	public Boolean existsById (Integer id);
 	public Utente findByeMailAndPassword(String eMail, String password);
 	public List<Utente> findAll();
 }

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.StudenteDTO;
 import com.example.demo.model.Studente;
-import com.example.demo.model.repository.RepStudente;
 import com.example.demo.model.service.SrvStudente;
 
 @RestController
@@ -23,14 +22,11 @@ import com.example.demo.model.service.SrvStudente;
 public class StudenteController {
 	@Autowired
 	SrvStudente srvStudente;
-	@Autowired
-	RepStudente repStudente;
-	StudenteDTO studenteDto = new StudenteDTO();
-	Response<StudenteDTO> response= new Response<>();
-	List <StudenteDTO> lista= new ArrayList<>();
+	
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<StudenteDTO> save (@RequestBody StudenteDTO studenteDto) {
+		Response<StudenteDTO> response= new Response<>();
 		try {
 			response = srvStudente.create(studenteDto);
 
@@ -42,12 +38,11 @@ public class StudenteController {
 	}
 	@GetMapping("/get/{id}")
 	public @ResponseBody Response<StudenteDTO> get (@PathVariable Integer id) {
-		
+		Response<StudenteDTO> response= new Response<>();		
 		try {
-			if (repStudente.existsById(id)) {
-				response.setMsg("A questo id corrisponde questa  ");
-				lista = response.aggiungi(studenteDto.cambiaTipoToDto(srvStudente.findById(id)));
-				response.setLista(lista);
+			if (srvStudente.existsById(id)) {
+				response.setMsg("A questo id corrisponde questa");
+				response.setData(StudenteDTO.cambiaTipoToDto(srvStudente.findById(id)));
 			} else {
 
 				response.setMsg("Non esiste un'studente correlata all'id selezionato, riprova!");
@@ -61,34 +56,34 @@ public class StudenteController {
 	
 	@DeleteMapping("/delete/{id}")
 	public @ResponseBody Response<StudenteDTO> delete (@PathVariable Integer id) {
+		Response<StudenteDTO> response= new Response<>();
 		try {
-			if (repStudente.existsById(id)) {
-				lista = response.aggiungi(studenteDto.cambiaTipoToDto(srvStudente.findById(id)));
-				response.setLista(lista);
+			if (srvStudente.existsById(id)) {
+				response.setData(StudenteDTO.cambiaTipoToDto(srvStudente.findById(id)));
 	 			response.setMsg(srvStudente.delete(id));
 			}
 			else {
 
 				response.setMsg("Non esiste un'studente correlata all'id selezionato, riprova!");
-				response.setLista(null);
+				response.setData(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 		return response;
 	}
 	@GetMapping("/get")
-	public @ResponseBody Response<StudenteDTO>  getAll () {
-
+	public @ResponseBody Response<List<StudenteDTO>>  getAll () {
+		Response<List<StudenteDTO>> response= new Response<>();
 		List<StudenteDTO> lista = new ArrayList<>();
 		try {
 			
 			
 			for (Studente a:srvStudente.findAll())
-				lista.add(studenteDto.cambiaTipoToDto(a));
-			response.setLista(lista);
+				lista.add(StudenteDTO.cambiaTipoToDto(a));
+			response.setData(lista);
 			response.setMsg("Ecco una lista con tutti gli Studenti! ");
 		}
 		catch (Exception e) {

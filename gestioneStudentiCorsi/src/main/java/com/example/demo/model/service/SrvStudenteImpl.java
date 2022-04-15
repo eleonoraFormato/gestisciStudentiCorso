@@ -21,8 +21,6 @@ public class SrvStudenteImpl implements SrvStudente {
 	@Autowired
 	SrvStatoPagamento srvStatoPagamento;
 	
-	Response<StudenteDTO> response;
-	List<StudenteDTO>lista;
 	@Override
 	public Studente findById(Integer id) {
 
@@ -31,18 +29,17 @@ public class SrvStudenteImpl implements SrvStudente {
 
 	@Override
 	public Response<StudenteDTO> create(StudenteDTO studenteDto) {
-
+		Response<StudenteDTO> response = new Response<>();
 		try {
-			Studente studente = studenteDto.cambiaTipoFromDto(studenteDto);
+			Studente studente = StudenteDTO.cambiaTipoFromDto(studenteDto);
 			studente.setCorso(srvCorso.findById(studenteDto.getIdCorso()));
 			studente.setStatoPagamento(srvStatoPagamento.findById(studenteDto.getIdStatoPagamento()));
 			studente.setAnagrafica(srvAnagrafica.findById(studenteDto.getIdAnagrafica()));
-			lista = response.aggiungi(studenteDto.cambiaTipoToDto(this.repStudente.save(studente)));
-			response.setLista(lista);
+			response.setData(StudenteDTO.cambiaTipoToDto(this.repStudente.save(studente)));
 			response.setMsg("Caricamento Studente riuscito con successo!");
 		} catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 
 		return response;
@@ -66,5 +63,10 @@ public class SrvStudenteImpl implements SrvStudente {
 	@Override
 	public List<Studente> findAll() {
 		return this.repStudente.findAll();
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return this.repStudente.existsById(id);
 	}
 }

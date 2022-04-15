@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.EsameDTO;
 import com.example.demo.model.Esame;
-import com.example.demo.model.repository.RepEsame;
 import com.example.demo.model.service.SrvEsame;
 
 @RestController
@@ -24,14 +23,11 @@ import com.example.demo.model.service.SrvEsame;
 public class EsameController {
 	@Autowired
 	SrvEsame srvEsame;
-	@Autowired
-	RepEsame repEsame;
-	EsameDTO esameDto = new EsameDTO();
-	Response<EsameDTO> response= new Response<>();
-	List<EsameDTO> lista= new ArrayList<>();
+	
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<EsameDTO> save (@RequestBody EsameDTO esameDto) {
+		Response<EsameDTO> response= new Response<>();
 		try {
 			response = srvEsame.create(esameDto);
 
@@ -43,12 +39,12 @@ public class EsameController {
 	}
 	@GetMapping("/get/{id}")
 	public @ResponseBody Response<EsameDTO> get (@PathVariable Integer id) {
+		Response<EsameDTO> response= new Response<>();
 		
 		try {
-			if (repEsame.existsById(id)) {
+			if (srvEsame.existsById(id)) {
 				response.setMsg("A questo id corrisponde questo  ");
-				lista = response.aggiungi(esameDto.cambiaTipoToDto(srvEsame.findById(id)));
-				response.setLista(lista);
+				response.setData(EsameDTO.cambiaTipoToDto(srvEsame.findById(id)));
 			} else {
 
 				response.setMsg("Non esiste un esame correlato all'id selezionato, riprova!");
@@ -62,33 +58,34 @@ public class EsameController {
 	
 	@DeleteMapping("/delete/{id}")
 	public  @ResponseBody Response<EsameDTO> delete (@PathVariable Integer id) {
+		Response<EsameDTO> response= new Response<>();
 		try {
-			if (repEsame.existsById(id)) {
-				lista = response.aggiungi(esameDto.cambiaTipoToDto(srvEsame.findById(id)));
-				response.setLista(lista);
+			if (srvEsame.existsById(id)) {
+				response.setData(EsameDTO.cambiaTipoToDto(srvEsame.findById(id)));
 	 			response.setMsg(srvEsame.delete(id));
 			}
 			else {
 				response.setMsg("Non esiste un esame correlato all'id selezionato, riprova!");
-				response.setLista(null);
+				response.setData(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 
 		}
 		return response;
 
 	}
 	@GetMapping("/get")
-	public @ResponseBody Response<EsameDTO> getAll () {
-		
+	public @ResponseBody Response<List<EsameDTO>> getAll () {
+		Response<List<EsameDTO>> response= new Response<>();
+		List<EsameDTO> lista = new ArrayList<>();
 		try {
 			
 			for (Esame a:srvEsame.findAll())
-				lista.add(esameDto.cambiaTipoToDto(a));
-			response.setLista(lista);
+				lista.add(EsameDTO.cambiaTipoToDto(a));
+			response.setData(lista);
 			response.setMsg("Ecco la lista di tutti gli esami!");
 		}
 		catch (Exception e) {

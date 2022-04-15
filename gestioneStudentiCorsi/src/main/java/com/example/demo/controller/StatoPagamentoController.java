@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.StatoPagamentoDTO;
 import com.example.demo.model.StatoPagamento;
-import com.example.demo.model.repository.RepStatoPagamento;
 import com.example.demo.model.service.SrvStatoPagamento;
 
 @RestController
@@ -24,15 +23,12 @@ import com.example.demo.model.service.SrvStatoPagamento;
 public class StatoPagamentoController {
 	@Autowired
 	SrvStatoPagamento srvStatoPagamento;
-	@Autowired
-	RepStatoPagamento repStatoPagamento;
-	StatoPagamentoDTO statoPagamentoDto = new StatoPagamentoDTO();
+
 	
-	Response<StatoPagamentoDTO> response= new Response<>();
-	List<StatoPagamentoDTO> lista= new ArrayList<>();
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<StatoPagamentoDTO> save (@RequestBody StatoPagamentoDTO statoPagamentoDto) {
+		Response<StatoPagamentoDTO> response= new Response<>();
 		try {
 			response = srvStatoPagamento.create(statoPagamentoDto);
 
@@ -45,11 +41,11 @@ public class StatoPagamentoController {
 	
 	@GetMapping("/get/{id}")
 	public @ResponseBody Response<StatoPagamentoDTO> get (@PathVariable Integer id) {
+		Response<StatoPagamentoDTO> response= new Response<>();
 		try {
-			if (repStatoPagamento.existsById(id)) {
+			if (srvStatoPagamento.existsById(id)) {
 				response.setMsg("A questo id corrisponde questa  ");
-				lista = response.aggiungi(statoPagamentoDto.cambiaTipoToDto(srvStatoPagamento.findById(id)));
-				response.setLista(lista);
+				response.setData(StatoPagamentoDTO.cambiaTipoToDto(srvStatoPagamento.findById(id)));
 			} else {
 
 				response.setMsg("Non esiste un statoPagamento correlata all'id selezionato, riprova!");
@@ -63,32 +59,33 @@ public class StatoPagamentoController {
 	
 	@DeleteMapping("/delete/{id}")
 	public @ResponseBody Response<StatoPagamentoDTO> delete (@PathVariable Integer id) {
+		Response<StatoPagamentoDTO> response= new Response<>();
 		try {
-			if (repStatoPagamento.existsById(id)) {
-				lista = response.aggiungi(statoPagamentoDto.cambiaTipoToDto(srvStatoPagamento.findById(id)));
-				response.setLista(lista);
+			if (srvStatoPagamento.existsById(id)) {
+				response.setData(StatoPagamentoDTO.cambiaTipoToDto(srvStatoPagamento.findById(id)));
 	 			response.setMsg(srvStatoPagamento.delete(id));
 			}
 			else {
 				response.setMsg("Non esiste una statoPagamento correlata all'id selezionato, riprova!");
-				response.setLista(null);
+				response.setData(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 
 		}
 		return response;
 	}
 	@GetMapping("/get")
-	public @ResponseBody Response<StatoPagamentoDTO>  getAll () {
-		
+	public @ResponseBody Response <List<StatoPagamentoDTO>>  getAll () {
+		Response <List<StatoPagamentoDTO>> response= new Response<>();
+		List<StatoPagamentoDTO> lista= new ArrayList<>();
 		try {
 			
 			for (StatoPagamento a:srvStatoPagamento.findAll())
-				lista.add(statoPagamentoDto.cambiaTipoToDto(a));	
-			response.setLista(lista);
+				lista.add(StatoPagamentoDTO.cambiaTipoToDto(a));	
+			response.setData(lista);
 			response.setMsg("Ecco la lista di tutti gli StatiPagamento");
 		}
 		catch (Exception e) {

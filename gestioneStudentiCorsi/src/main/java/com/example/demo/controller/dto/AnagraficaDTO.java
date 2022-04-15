@@ -48,7 +48,7 @@ public class AnagraficaDTO {
 	}
 	
 	
-	public AnagraficaDTO cambiaTipoToDto (Anagrafica anagrafica) {
+	public static AnagraficaDTO cambiaTipoToDto (Anagrafica anagrafica) {
 		AnagraficaDTO anagraficaDto = new AnagraficaDTO();
 		anagraficaDto.setId(anagrafica.getId());
 		anagraficaDto.setNome(anagrafica.getNome());
@@ -58,7 +58,7 @@ public class AnagraficaDTO {
 		return anagraficaDto;	
 	}
 	
-	public Anagrafica cambiaTipoFromDto (AnagraficaDTO anagraficaDto) {
+	public static Anagrafica cambiaTipoFromDto (AnagraficaDTO anagraficaDto) {
 		Anagrafica anagrafica = new Anagrafica();
 		anagrafica.setNome(anagraficaDto.getNome());
 		anagrafica.setCognome(anagraficaDto.getCognome());

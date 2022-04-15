@@ -14,9 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.AnagraficaDTO;
-import com.example.demo.controller.Response;
 import com.example.demo.model.Anagrafica;
-import com.example.demo.model.repository.RepAnagrafica;
 import com.example.demo.model.service.SrvAnagrafica;
 
 @RestController
@@ -25,15 +23,12 @@ public class AnagraficaController {
 	@Autowired
 	SrvAnagrafica srvAnagrafica;
 
-	@Autowired
-	RepAnagrafica repAnagrafica;
-	AnagraficaDTO anagraficaDto = new AnagraficaDTO();
-	Response<AnagraficaDTO> response= new Response<>();
-	List<AnagraficaDTO> lista= new ArrayList<>();
+	
+	
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<AnagraficaDTO> save(@RequestBody AnagraficaDTO anagraficaDto) {
-
+		Response<AnagraficaDTO> response= new Response<>();
 		try {
 			response = srvAnagrafica.create(anagraficaDto);
 
@@ -46,12 +41,11 @@ public class AnagraficaController {
 
 	@GetMapping("/get/{id}")
 	public @ResponseBody Response<AnagraficaDTO> get(@PathVariable Integer id) {
-
+		Response<AnagraficaDTO> response= new Response<>();
 		try {
-			if (repAnagrafica.existsById(id)) {
+			if (srvAnagrafica.existsById(id)) {
 				response.setMsg("A questo id corrisponde questa  ");
-				lista = response.aggiungi(anagraficaDto.cambiaTipoToDto(srvAnagrafica.findById(id)));
-				response.setLista(lista);
+				response.setData(AnagraficaDTO.cambiaTipoToDto(srvAnagrafica.findById(id)));
 			} else {
 
 				response.setMsg("Non esiste un'anagrafica correlata all'id selezionato, riprova!");
@@ -64,13 +58,14 @@ public class AnagraficaController {
 	}
 
 	@GetMapping("/get")
-	public @ResponseBody Response<AnagraficaDTO> getAll() {
+	public @ResponseBody Response<List<AnagraficaDTO>> getAll() {
+		Response<List<AnagraficaDTO>> response= new Response<>();
+		List<AnagraficaDTO> lista = new ArrayList<>();
 		try {
 			
-			
 			for (Anagrafica a:srvAnagrafica.findAll())
-				lista.add(anagraficaDto.cambiaTipoToDto(a));
-			response.setLista(lista);
+				lista.add(AnagraficaDTO.cambiaTipoToDto(a));
+			response.setData(lista);
 			response.setMsg("Ecco tutte le anagrafiche! ");
 		}
 		catch (Exception e) {
@@ -81,10 +76,10 @@ public class AnagraficaController {
 
 	@DeleteMapping("/delete/{id}")
 	public @ResponseBody Response<AnagraficaDTO> delete(@PathVariable Integer id) {
+		Response<AnagraficaDTO> response= new Response<>();
 		try {
-			if (repAnagrafica.existsById(id)) {
-				lista = response.aggiungi(anagraficaDto.cambiaTipoToDto(srvAnagrafica.findById(id)));
-				response.setLista(lista);
+			if (srvAnagrafica.existsById(id)) {
+				response.setData(AnagraficaDTO.cambiaTipoToDto(srvAnagrafica.findById(id)));
 	 			response.setMsg(srvAnagrafica.delete(id));
 			}
 			else {
@@ -94,7 +89,6 @@ public class AnagraficaController {
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
 
 		}
 		return response; 

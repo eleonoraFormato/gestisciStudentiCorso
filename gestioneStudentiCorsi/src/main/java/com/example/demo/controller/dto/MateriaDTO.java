@@ -39,7 +39,7 @@ public class MateriaDTO {
 		super();
 	}
 
-	public MateriaDTO cambiaTipoToDto (Materia materia) {
+	public static MateriaDTO cambiaTipoToDto (Materia materia) {
 		
 		MateriaDTO materiaDto = new MateriaDTO();
 		materiaDto.setId(materia.getId());
@@ -48,7 +48,7 @@ public class MateriaDTO {
 		return materiaDto;
 	}
 	
-public Materia cambiaTipoFromDto (MateriaDTO materiaDto) {
+	public static Materia cambiaTipoFromDto (MateriaDTO materiaDto) {
 		
 		Materia materia = new Materia();
 		materia.setId(materiaDto.getId());

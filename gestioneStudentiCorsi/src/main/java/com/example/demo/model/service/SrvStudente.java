@@ -15,4 +15,5 @@ public interface SrvStudente {
 	public Response<StudenteDTO> create(StudenteDTO studenteDto);
 	public String delete(Integer id);
 	public List<Studente> findAll();
+	public Boolean existsById (Integer id);
 }

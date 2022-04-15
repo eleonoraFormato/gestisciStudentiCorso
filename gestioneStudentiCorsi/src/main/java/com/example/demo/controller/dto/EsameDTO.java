@@ -66,7 +66,7 @@ public class EsameDTO {
 	}
 
 
-	public EsameDTO cambiaTipoToDto (Esame esame) {
+	public static EsameDTO cambiaTipoToDto (Esame esame) {
 		EsameDTO esameDto = new EsameDTO();
 		esameDto.setId(esame.getId());
 		esameDto.setVoto(esame.getVoto());
@@ -76,7 +76,7 @@ public class EsameDTO {
 		return esameDto;
 		}
 	
-	public Esame cambiaTipoFromDto (EsameDTO esameDto) {
+	public static Esame cambiaTipoFromDto (EsameDTO esameDto) {
 		Esame esame = new Esame ();
 		esame.setId(esameDto.getId());
 		esame.setVoto(esameDto.getVoto());

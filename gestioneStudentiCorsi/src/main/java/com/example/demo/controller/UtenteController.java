@@ -17,7 +17,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.UtenteDTO;
 import com.example.demo.model.Utente;
-import com.example.demo.model.repository.RepUtente;
 import com.example.demo.model.service.SrvUtente;
 
 @RestController
@@ -25,14 +24,10 @@ import com.example.demo.model.service.SrvUtente;
 public class UtenteController {
 	@Autowired
 	SrvUtente srvUtente;
-	@Autowired
-	RepUtente repUtente;
-	UtenteDTO utenteDto = new UtenteDTO();
-	Response<UtenteDTO> response= new Response<>();
-	List<UtenteDTO> lista= new ArrayList<>();
 	
 	@PostMapping("/save")
 	public @ResponseBody Response<UtenteDTO> save (@RequestBody UtenteDTO utenteDto) {
+		Response<UtenteDTO> response= new Response<>();
 		try {
 			response = srvUtente.create(utenteDto);
 
@@ -45,11 +40,11 @@ public class UtenteController {
 	
 	@GetMapping("/get/{id}")
 	public @ResponseBody Response<UtenteDTO> get (@PathVariable Integer id) {
+		Response<UtenteDTO> response= new Response<>();
 		try {
-			if (repUtente.existsById(id)) {
+			if (srvUtente.existsById(id)) {
 				response.setMsg("A questo id corrisponde questa  ");
-				lista = response.aggiungi(utenteDto.cambiaTipoToDto(srvUtente.findById(id)));
-				response.setLista(lista);
+				response.setData(UtenteDTO.cambiaTipoToDto(srvUtente.findById(id)));
 			} else {
 
 				response.setMsg("Non esiste un'utente correlata all'id selezionato, riprova!");
@@ -63,35 +58,35 @@ public class UtenteController {
 	
 	@DeleteMapping("/delete/{id}")
 	public @ResponseBody Response<UtenteDTO> delete (@PathVariable Integer id) {
+		Response<UtenteDTO> response= new Response<>();
 		try {
-			if (repUtente.existsById(id)) {
-				lista = response.aggiungi(utenteDto.cambiaTipoToDto(srvUtente.findById(id)));
-				response.setLista(lista);
+			if (srvUtente.existsById(id)) {
+				response.setData(UtenteDTO.cambiaTipoToDto(srvUtente.findById(id)));
 	 			response.setMsg(srvUtente.delete(id));
 			}
 			else {
 
 				response.setMsg("Non esiste un'utente correlata all'id selezionato, riprova!");
-				response.setLista(null);
+				response.setData(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 
 		}
 		return response;
 
 	}
 	@GetMapping("/get")
-	public @ResponseBody Response<UtenteDTO>  getAll () {
-		
+	public @ResponseBody Response<List<UtenteDTO>>  getAll () {
+		Response<List<UtenteDTO>> response= new Response<>();
+		List <UtenteDTO> lista = new ArrayList<>();
 		try {
 			
-			
 			for (Utente a:srvUtente.findAll())
-				lista.add(utenteDto.cambiaTipoToDto(a));
-			response.setLista(lista);
+				lista.add(UtenteDTO.cambiaTipoToDto(a));
+			response.setData(lista);
 			response.setMsg("Ecco una lista di tutti gli Utenti! ");
 		}
 		catch (Exception e) {

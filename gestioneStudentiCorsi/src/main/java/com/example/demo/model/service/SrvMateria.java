@@ -13,7 +13,7 @@ import com.example.demo.model.Materia;
 public interface SrvMateria {
 	public Response<MateriaDTO> create(MateriaDTO materiaDto);
 	public Materia findById(Integer id);
-	
+	public Boolean existsById (Integer id);
 	public String delete (Integer id);
 	public List<Materia> findAll();
 }

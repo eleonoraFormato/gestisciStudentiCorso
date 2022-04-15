@@ -16,4 +16,5 @@ public interface SrvAnagrafica {
 	public List<Anagrafica> findAll();
 	public String delete(Integer id);
 	public Anagrafica findByCodiceFiscale(Anagrafica anagrafica);
+	public Boolean existsById (Integer id);
 }

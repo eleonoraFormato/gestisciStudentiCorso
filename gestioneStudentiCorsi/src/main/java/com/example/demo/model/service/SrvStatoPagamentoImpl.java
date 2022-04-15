@@ -14,21 +14,19 @@ import com.example.demo.model.repository.RepStatoPagamento;
 public class SrvStatoPagamentoImpl implements SrvStatoPagamento {
 	@Autowired
 	RepStatoPagamento repStatoPagamento;
-	Response<StatoPagamentoDTO> response;
-	List<StatoPagamentoDTO>lista;
+	
 
 	@Override
 	public Response<StatoPagamentoDTO> create(StatoPagamentoDTO statoPagamentoDto) {
-		
+		Response<StatoPagamentoDTO> response = new Response<>();
 		try {
-		StatoPagamento statoPagamento = statoPagamentoDto.cambiaTipoFromDto(statoPagamentoDto);
-		lista = response.aggiungi(statoPagamentoDto.cambiaTipoToDto(this.repStatoPagamento.save(statoPagamento)));
-		response.setLista(lista);
+
+		response.setData(StatoPagamentoDTO.cambiaTipoToDto(this.repStatoPagamento.save(StatoPagamentoDTO.cambiaTipoFromDto(statoPagamentoDto))));
 		response.setMsg("Caricamento Stato Pagamento riuscito con successo!");
 		}
 		catch(Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 		
 		return response;
@@ -59,6 +57,11 @@ public class SrvStatoPagamentoImpl implements SrvStatoPagamento {
 	@Override
 	public List<StatoPagamento> findAll() {
 		return this.repStatoPagamento.findAll();
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return this.repStatoPagamento.existsById(id);
 	}
 	
 }

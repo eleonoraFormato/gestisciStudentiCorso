@@ -15,20 +15,20 @@ public class SrvCorsoImpl implements SrvCorso{
 	@Autowired
 	RepCorso repCorso;
 
-	Response<CorsoDTO> response;
-	List<CorsoDTO> listaCorso;
 	
 	@Override
 	public Response<CorsoDTO> create(CorsoDTO corsoDto) {
+		Response<CorsoDTO> response = new Response<>();
 		try {
-		Corso corso = corsoDto.cambiaTipoFromDto(corsoDto);
-		listaCorso = response.aggiungi(corsoDto.cambiaTipoToDto(this.repCorso.save(corso)));
-		response.setLista(listaCorso);
+		
+		Corso corso = CorsoDTO.cambiaTipoFromDto(corsoDto);
+		response.setData(CorsoDTO.cambiaTipoToDto(this.repCorso.save(corso)));
+		//response.setData(CorsoDTO.cambiaTipoToDto(this.repCorso.save(CorsoDTO.cambiaTipoFromDto(corsoDto))));
 		response.setMsg("Caricamento Corso riuscito con successo!");
 		}
 		catch(Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 		}
 		
 		return response;
@@ -59,5 +59,11 @@ public class SrvCorsoImpl implements SrvCorso{
 	@Override
 	public List<Corso> findAll() {
 		return this.repCorso.findAll();
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		
+		return this.repCorso.existsById(id);
 	}
 }

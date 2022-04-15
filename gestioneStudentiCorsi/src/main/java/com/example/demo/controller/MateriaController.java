@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.MateriaDTO;
 import com.example.demo.model.Materia;
-import com.example.demo.model.repository.RepMateria;
 import com.example.demo.model.service.SrvMateria;
 
 @RestController
@@ -23,13 +22,9 @@ import com.example.demo.model.service.SrvMateria;
 public class MateriaController {
 	@Autowired
 	SrvMateria srvMateria;
-	@Autowired
-	RepMateria repMateria;
-	MateriaDTO materiaDto = new MateriaDTO();
-	Response<MateriaDTO> response= new Response<>();
-	List<MateriaDTO> lista= new ArrayList<>();
 	@PostMapping("/save")
 	public @ResponseBody Response<MateriaDTO> save (@RequestBody MateriaDTO materiaDto) {
+		Response<MateriaDTO> response= new Response<>();
 		try {
 			response = srvMateria.create(materiaDto);
 
@@ -39,55 +34,56 @@ public class MateriaController {
 		return response;
 
 	}
-	@GetMapping("/get/{id}")
-	public @ResponseBody Response<MateriaDTO> get (@PathVariable Integer id) {
-		
-		try {
-			if (repMateria.existsById(id)) {
-				response.setMsg("A questo id corrisponde questa  ");
-				lista = response.aggiungi(materiaDto.cambiaTipoToDto(srvMateria.findById(id)));
-				response.setLista(lista);
-
-			} else {
-
-				response.setMsg("Non esiste un materia correlata all'id selezionato, riprova!");
-			}
-		} catch (Exception e) {
-			response.setMsg("Ops! Qualcosa è andato storto: " + e.getMessage());
-		}
-
-		return response;
-	}
+//	@GetMapping("/get/{id}")
+//	public @ResponseBody Response<MateriaDTO> get (@PathVariable Integer id) {
+//		Response<MateriaDTO> response= new Response<>();
+//		
+//		try {
+//			if (srvMateria.existsById(id)) {
+//				response.setMsg("A questo id corrisponde questa  ");
+//				response.setData(MateriaDTO.cambiaTipoToDto(srvMateria.findById(id)));
+//
+//			} else {
+//
+//				response.setMsg("Non esiste un materia correlata all'id selezionato, riprova!");
+//			}
+//		} catch (Exception e) {
+//			response.setMsg("Ops! Qualcosa è andato storto: " + e.getMessage());
+//		}
+//
+//		return response;
+//	}
 	
 	@DeleteMapping("/delete/{id}")
 	public @ResponseBody Response<MateriaDTO> delete (@PathVariable Integer id) {
+		Response<MateriaDTO> response= new Response<>();
 		try {
-			if (repMateria.existsById(id)) {
-			lista = response.aggiungi(materiaDto.cambiaTipoToDto(srvMateria.findById(id)));
-			response.setLista(lista);
+			if (srvMateria.existsById(id)) {
+			response.setData(MateriaDTO.cambiaTipoToDto(srvMateria.findById(id)));
 	 			response.setMsg(srvMateria.delete(id));
 			}
 			else {
 				response.setMsg("Non esiste una materia correlata all'id selezionato, riprova!");
-				response.setLista(null);
+				response.setData(null);
 			}
 		}
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
+			response.setData(null);
 
 		}
 		return response;
 
 	}
 	@GetMapping("/get")
-	public @ResponseBody Response<MateriaDTO>  getAll () {
-		
+	public @ResponseBody Response<List<MateriaDTO>>  getAll () {
+		Response<List<MateriaDTO>> response= new Response<>();
+		List<MateriaDTO> lista = new ArrayList<>();
 		try {
 			
 			for (Materia a:srvMateria.findAll())
-				lista.add(materiaDto.cambiaTipoToDto(a));
-			response.setLista(lista);
+				lista.add(MateriaDTO.cambiaTipoToDto(a));
+			response.setData(lista);
 			response.setMsg("Ecco la lista di tutte le Materie! ");
 		}
 		catch (Exception e) {
@@ -95,4 +91,25 @@ public class MateriaController {
 		}
 		return response;
 	}
+	//potrebbe esserci un metodo searchBy che prende in input due campi : la tabella e l'id e poi ti crea la query con i due dati (?)
+//	@GetMapping("/get/{id}")
+//	public @ResponseBody Response<MateriaDTO> get (@PathVariable Integer id) {
+//		Response<MateriaDTO> response= new Response<>();
+//		
+//		try {
+//			if (srvMateria.existsById(id)) {
+//				response.setMsg("A questo id corrisponde questa  ");
+//				response.setData(MateriaDTO.cambiaTipoToDto(srvMateria.findById(id)));
+//
+//			} else {
+//
+//				response.setMsg("Non esiste un materia correlata all'id selezionato, riprova!");
+//			}
+//		} catch (Exception e) {
+//			response.setMsg("Ops! Qualcosa è andato storto: " + e.getMessage());
+//		}
+//
+//		return response;
+//	}
+
 }

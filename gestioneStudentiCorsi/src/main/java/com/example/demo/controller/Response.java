@@ -1,10 +1,9 @@
 package com.example.demo.controller;
 
-import java.util.List;
 
 public class Response <T>{
 	private String msg;
-	private List <T> lista;
+	private T data;;
 	
 	public String getMsg() {
 		return msg;
@@ -12,24 +11,12 @@ public class Response <T>{
 	public void setMsg(String msg) {
 		this.msg = msg;
 	}
-	public List <T> getLista() {
-		return lista;
+	public T getData() {
+		return data;
 	}
-	public void setLista(List <T> lista) {
-		this.lista = lista;
+	public void setData(T data) {
+		this.data = data;
 	}
-	public List <T> aggiungi(T t)
-    {
-        lista.add(t);
-        return lista;
-    }
-	public Response(String msg, List<T> lista) {
-		super();
-		this.msg = msg;
-		this.lista = lista;
-	}
-	public Response() {
-		super();
-	}
+	
 	
 }

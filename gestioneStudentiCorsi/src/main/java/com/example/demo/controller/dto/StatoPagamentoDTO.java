@@ -39,7 +39,7 @@ public class StatoPagamentoDTO {
 		super();
 	}
 
-	public StatoPagamentoDTO cambiaTipoToDto (StatoPagamento statoPagamento) {
+	public static StatoPagamentoDTO cambiaTipoToDto (StatoPagamento statoPagamento) {
 		
 		StatoPagamentoDTO statoPagamentoDTO = new StatoPagamentoDTO();
 		statoPagamentoDTO.setId(statoPagamento.getId());	
@@ -48,7 +48,7 @@ public class StatoPagamentoDTO {
 		return statoPagamentoDTO;
 	}
 	
-public StatoPagamento cambiaTipoFromDto (StatoPagamentoDTO statoPagamentoDTO) {
+	public static StatoPagamento cambiaTipoFromDto (StatoPagamentoDTO statoPagamentoDTO) {
 		
 		StatoPagamento statoPagamento = new StatoPagamento();
 		statoPagamento.setId(statoPagamentoDTO.getId());	

@@ -14,10 +14,7 @@ import com.example.demo.model.repository.RepAnagrafica;
 public class SrvAnagraficaImpl implements SrvAnagrafica {
 	@Autowired
 	RepAnagrafica repAnagrafica;
-	
-	Response <AnagraficaDTO> response;
-	List<AnagraficaDTO> listaAnagrafica;
-	
+
 	@Override
 	public Anagrafica findById(Integer id) {
 		return this.repAnagrafica.findById(id).get();
@@ -26,27 +23,23 @@ public class SrvAnagraficaImpl implements SrvAnagrafica {
 
 	@Override
 	public Response<AnagraficaDTO> create(AnagraficaDTO anagraficaDto) {
+		Response<AnagraficaDTO> response = new Response<>();
 		try {
-		if (anagraficaDto.getCodiceFiscale().length() == 16) 
-		{
-			Anagrafica anagrafica = anagraficaDto.cambiaTipoFromDto(anagraficaDto);
-			if (this.repAnagrafica.findByCodiceFiscale(anagraficaDto.getCodiceFiscale())== null) {
-				listaAnagrafica = response.aggiungi(anagraficaDto.cambiaTipoToDto(this.repAnagrafica.save(anagrafica)));
-				response.setLista(listaAnagrafica);
-				response.setMsg("Caricamento Anagrafica riuscito con successo!");
-			}
+			if (anagraficaDto.getCodiceFiscale().length() == 16) {
+				Anagrafica anagrafica = AnagraficaDTO.cambiaTipoFromDto(anagraficaDto);
+				if (this.repAnagrafica.findByCodiceFiscale(anagraficaDto.getCodiceFiscale()) == null) {
+					response.setData(AnagraficaDTO.cambiaTipoToDto(this.repAnagrafica.save(anagrafica)));
+					response.setMsg("Caricamento Anagrafica riuscito con successo!");
+				}
 
-			else {
-				response.setMsg("Caricamento non riuscito: Codice Fiscale già inserito!");
+				else {
+					response.setMsg("Caricamento non riuscito: Codice Fiscale già inserito!");
+				}
+			} else {
+				response.setMsg("Codice Fiscale inserito non valido, riprova!");
 			}
-		}
-		else {
-			response.setMsg("Codice Fiscale inserito non valido, riprova!") ;
-		}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
-			response.setLista(null);
 
 		}
 		return response;
@@ -78,6 +71,11 @@ public class SrvAnagraficaImpl implements SrvAnagrafica {
 	public Anagrafica findByCodiceFiscale(Anagrafica anagrafica) {
 
 		return repAnagrafica.findByCodiceFiscale(anagrafica.getCodiceFiscale());
+	}
+
+	@Override
+	public Boolean existsById(Integer id) {
+		return repAnagrafica.existsById(id);
 	}
 
 }

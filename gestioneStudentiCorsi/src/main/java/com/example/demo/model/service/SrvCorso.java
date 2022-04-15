@@ -14,7 +14,7 @@ public interface SrvCorso {
 	public Response<CorsoDTO> create(CorsoDTO corsoDTO);
 	
 	public Corso findById(Integer id);
-	
+	public Boolean existsById (Integer id);
 	public String delete (Integer id);
 	public List<Corso> findAll();
 }
