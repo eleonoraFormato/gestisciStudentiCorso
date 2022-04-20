@@ -11,9 +11,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.example.demo.controller.dto.AnagraficaDTO;
 import com.example.demo.controller.dto.EsameDTO;
 import com.example.demo.model.Esame;
 import com.example.demo.model.service.SrvEsame;
@@ -37,7 +39,7 @@ public class EsameController {
 		return response;
 
 	}
-	@GetMapping("/get/{id}")
+	@PostMapping("/get/{id}")
 	public @ResponseBody Response<EsameDTO> get (@PathVariable Integer id) {
 		Response<EsameDTO> response= new Response<>();
 		
@@ -77,7 +79,7 @@ public class EsameController {
 		return response;
 
 	}
-	@GetMapping("/get")
+	@PostMapping("/get")
 	public @ResponseBody Response<List<EsameDTO>> getAll () {
 		Response<List<EsameDTO>> response= new Response<>();
 		List<EsameDTO> lista = new ArrayList<>();
@@ -91,6 +93,22 @@ public class EsameController {
 		catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
 		}
+		return response;
+	}
+	@PostMapping("/search")
+	public @ResponseBody Response <List<EsameDTO>> getBy (@RequestParam String parametro) {
+		Response <List<EsameDTO>> response= new Response<>();
+		
+		try {
+				
+				response.setMsg("Questo è quello che ho trovato!  " + parametro);
+				//response.setData(srvMateria.findBy(parametro, Integer.parseInt(id)));
+
+			} 
+		 catch (Exception e) {
+			response.setMsg("Ops! Qualcosa è andato storto: " + e.getMessage());
+		}
+
 		return response;
 	}
 }

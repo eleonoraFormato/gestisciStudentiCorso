@@ -1,5 +1,6 @@
 package com.example.demo.model.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -61,6 +62,15 @@ public class SrvMateriaImpl implements SrvMateria {
 	@Override
 	public Boolean existsById(Integer id) {
 		return this.repMateria.existsById(id);
+	}
+
+	@Override
+	public List<MateriaDTO> findBy(String parametro, String valore) {
+		List <MateriaDTO> lista = new ArrayList<>();
+		 for (Materia m: this.repMateria.findBy(parametro, valore))
+			lista.add(MateriaDTO.cambiaTipoToDto(m));
+		 this.repMateria.findBy(parametro, valore);
+		return lista;
 	}
 }
 

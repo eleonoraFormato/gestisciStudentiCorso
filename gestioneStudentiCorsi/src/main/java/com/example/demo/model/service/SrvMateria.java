@@ -16,4 +16,5 @@ public interface SrvMateria {
 	public Boolean existsById (Integer id);
 	public String delete (Integer id);
 	public List<Materia> findAll();
+	public List<MateriaDTO> findBy(String parametro, String valore);
 }
