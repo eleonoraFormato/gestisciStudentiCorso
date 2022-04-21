@@ -18,21 +18,36 @@ $(document).ready(function() {
                         <td>${anagrafica.dob}</td>
                         <td>${anagrafica.codiceFiscale}</td>
                         <td>
-                            <button id= "btnMod" type="button" class="btn btn-outline-dark btn-sm">Modifica</button>
+                            <button id="btnMod" type="button" class="btn btn-outline-dark btn-sm">Modifica</button>
                             <button id="btnDel" type="button" class="btn btn-outline-dark btn-sm">Elimina</button>
                         </td>
                     </tr>`;
                 }
                     if(i==numeroPersone)
                         lista+='</tbody>';
-                    $('#tblAnagrafica').html(lista);
+                    $('#tblAnagrafica').html(lista);  
+                    $('#btnDel').click(function () {let testo = "sono in cancella";
+            $('#esito').html(testo);
+        });    
         },
         error: function (){
             console.log('Errore'+e);
         }
      })
-
-    });
+   
+            // let id = data.data.id;
+            // $.ajax({
+            //     url: "http://localhost:8080/anagrafica/del/" + id,
+            //     method: 'delete',
+            //     success: function (data){
+            //         $('#esito').html(data.msg);
+            //     },
+            //     error: function (){
+            //     console.log('Errore'+e);
+            // }})
+            
+        });    
+})
 
     // $('#btnMod').click(function () {
     //     $.ajax({url: "http://localhost:8080/anagrafica/get",
@@ -42,28 +57,18 @@ $(document).ready(function() {
     //         console.log('Errore'+e);
     //     }})});
 
-    $('#btnDel').click(function () {
-        
-        $.ajax({url: "http://localhost:8080/anagrafica/delete/" + url_id,
-        method: 'delete',
-        success: function (data){
-            var url_id = ${data.data.id};
-            let messaggio = data.msg;
-            $('#esito').html(messaggio);
-        },
-        error: function (){
-             console.log('Errore'+e);
-        }})});
+    
 
-    // $('#btnNew').click(function () {
-    //     $.ajax({url: "http://localhost:8080/anagrafica/get",
-    //     method: 'get',
-    //     success: function (){
-    //         let form = ''
-            
-    //         $('#tblAnagrafica').html(form);
-    //     },
-    //     error: function (){
-    //         console.log('Errore'+e);
-    //     }})});
-    })
+    $('#btnAdd').click(function () {
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/anagrafica/save',
+            data:'{"nome" : "${nome}", "cognome" : "${cognome}", "dob" : "${dob}", "codiceFiscale" : "${codiceFiscale}"}',
+            success: function (data){
+                let form = ''        
+                $('#esito').html(data.msg);
+            },
+            error: function (){
+                console.log('Errore'+e);
+        }})});
+    
