@@ -34,20 +34,27 @@ $(document).ready(function() {
             console.log('Errore'+e);
         }
      })
-   
-            // let id = data.data.id;
-            // $.ajax({
-            //     url: "http://localhost:8080/anagrafica/del/" + id,
-            //     method: 'delete',
-            //     success: function (data){
-            //         $('#esito').html(data.msg);
-            //     },
-            //     error: function (){
-            //     console.log('Errore'+e);
-            // }})
             
         });    
 })
+
+// $('#btnAdd').click(function () {
+//     $.ajax({
+//         type: 'POST',
+//         url: 'http://localhost:8080/anagrafica/save',
+//         data:{
+//             "nome" : $('#nome'),
+//             "cognome" : $('#cognome'),
+//             "dob" : $('#dob'),
+//             "codiceFiscale" : $('#codiceFiscale')
+//         },
+//         success: function (data){
+//             let messaggio = JSON.stringify(data.msg);
+//             $('#esito').text(messaggio);
+//         },
+//         error: function (){
+//             console.log('Errore'+e);
+//     }})});
 
     // $('#btnMod').click(function () {
     //     $.ajax({url: "http://localhost:8080/anagrafica/get",
@@ -57,18 +64,16 @@ $(document).ready(function() {
     //         console.log('Errore'+e);
     //     }})});
 
-    
+    // let id = data.data.id;
+            // $.ajax({
+            //     url: "http://localhost:8080/anagrafica/del/" + id,
+            //     method: 'delete',
+            //     success: function (data){
+            //         $('#esito').html(data.msg);
+            //     },
+            //     error: function (){
+            //     console.log('Errore'+e);
+            // }})
 
-    $('#btnAdd').click(function () {
-        $.ajax({
-            type: 'POST',
-            url: 'http://localhost:8080/anagrafica/save',
-            data:'{"nome" : "${nome}", "cognome" : "${cognome}", "dob" : "${dob}", "codiceFiscale" : "${codiceFiscale}"}',
-            success: function (data){
-                let form = ''        
-                $('#esito').html(data.msg);
-            },
-            error: function (){
-                console.log('Errore'+e);
-        }})});
+   
     
