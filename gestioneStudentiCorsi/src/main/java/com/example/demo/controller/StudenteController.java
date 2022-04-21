@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.example.demo.model.Studente;
 import com.example.demo.model.service.SrvStudente;
 
 @RestController
+@CrossOrigin(value = "*")
 @RequestMapping ("/studente")
 public class StudenteController {
 	@Autowired
@@ -38,7 +40,7 @@ public class StudenteController {
 		return response;
 
 	}
-	@PostMapping("/get/{id}")
+	@GetMapping("/get/{id}")
 	public @ResponseBody Response<StudenteDTO> get (@PathVariable Integer id) {
 		Response<StudenteDTO> response= new Response<>();		
 		try {
@@ -76,7 +78,7 @@ public class StudenteController {
 		}
 		return response;
 	}
-	@PostMapping("/get")
+	@GetMapping("/get")
 	public @ResponseBody Response<List<StudenteDTO>>  getAll () {
 		Response<List<StudenteDTO>> response= new Response<>();
 		List<StudenteDTO> lista = new ArrayList<>();
@@ -93,7 +95,7 @@ public class StudenteController {
 		}
 		return response;
 	}
-	@PostMapping("/search")
+	@GetMapping("/search")
 	public @ResponseBody Response <List<StudenteDTO>> getBy (@RequestParam String parametro) {
 		Response <List<StudenteDTO>> response= new Response<>();
 		

@@ -40,7 +40,7 @@ public class MateriaController {
 
 	}
 
-	@PostMapping("/get/{id}")
+	@GetMapping("/get/{id}")
 	public @ResponseBody Response<MateriaDTO> get (@PathVariable Integer id) {
 		Response<MateriaDTO> response= new Response<>();
 		
@@ -100,7 +100,7 @@ public class MateriaController {
 
 	
 	//potrebbe esserci un metodo searchBy che prende in input due campi : la tabella e l'id e poi ti crea la query con i due dati (?)
-	@PostMapping("/search")
+	@GetMapping("/search")
 	public @ResponseBody Response <List<MateriaDTO>> getBy (@RequestParam String parametro, @RequestParam String valore) {
 		Response <List<MateriaDTO>> response= new Response<>();
 		

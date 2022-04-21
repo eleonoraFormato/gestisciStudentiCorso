@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import com.example.demo.model.StatoPagamento;
 import com.example.demo.model.service.SrvStatoPagamento;
 
 @RestController
+@CrossOrigin(value = "*")
 @RequestMapping ("/statoPagamento")
 public class StatoPagamentoController {
 	@Autowired
@@ -40,7 +42,7 @@ public class StatoPagamentoController {
 
 	}
 	
-	@PostMapping("/get/{id}")
+	@GetMapping("/get/{id}")
 	public @ResponseBody Response<StatoPagamentoDTO> get (@PathVariable Integer id) {
 		Response<StatoPagamentoDTO> response= new Response<>();
 		try {
@@ -78,7 +80,7 @@ public class StatoPagamentoController {
 		}
 		return response;
 	}
-	@PostMapping("/get")
+	@GetMapping("/get")
 	public @ResponseBody Response <List<StatoPagamentoDTO>>  getAll () {
 		Response <List<StatoPagamentoDTO>> response= new Response<>();
 		List<StatoPagamentoDTO> lista= new ArrayList<>();
@@ -94,7 +96,7 @@ public class StatoPagamentoController {
 		}
 		return response;
 	}
-	@PostMapping("/search")
+	@GetMapping("/search")
 	public @ResponseBody Response <List<StatoPagamentoDTO>> getBy (@RequestParam String parametro) {
 		Response <List<StatoPagamentoDTO>> response= new Response<>();
 		
