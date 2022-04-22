@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demo.controller.dto.AnagraficaDTO;
-import com.example.demo.controller.dto.MateriaDTO;
 import com.example.demo.model.Anagrafica;
 import com.example.demo.model.service.SrvAnagrafica;
 

@@ -12,17 +12,16 @@
             <button id="btnNew" type="button" class="btn btn-outline-dark">Aggiungi una Nuova Materia</button>
             <button id="btnGet" type="button" class="btn btn-outline-dark">Carica Tutte Le Materie</button>
             <table id="tblMateria" class="table table-striped"></table>
-            <form id="tblNewMateria">
-                <div class="form-group">
-                <label for="exampleInputEmail1">Inserisci Nome</label>
+            <div class="form-group">
+                <label for="nome">Inserisci Nome</label>
                 <input type="text" class="form-control" id="nome" placeholder="Nome">
-                </div>
-                <div class="form-group">
-                    <label for="exampleInputPassword1">Inserisci Descrizione</label>
-                    <input type="text" class="form-control" id="descrizione" placeholder="Descrizione">
-                </div>
-                <button type="submit" id="btnAdd" class="btn btn-primary">Aggiungi Nuova Materia</button>
-            </form>
+            </div>
+            <div class="form-group">
+                <label for="descrizione">Inserisci Descrizione</label>
+                <input type="text" class="form-control" id="descrizione" placeholder="Descrizione">
+            </div>
+            <button type="submit" id="btnAdd" class="btn btn-primary">Aggiungi Nuova Materia</button>
+            <h1 id="esito"></h1>
         </div>
     </body>
 </html>

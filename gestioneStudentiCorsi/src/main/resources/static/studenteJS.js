@@ -49,11 +49,24 @@ $(document).ready(function() {
     //          console.log('Errore'+e);
     //     }})});
 
-    // $('#btnNew').click(function () {
-    //     $.ajax({url: "http://localhost:8080/studente/get",
-    //     method: 'get',
-    //     success: function (data){},
-    //     error: function (){
-    //         console.log('Errore'+e);
-    //     }})});
+    $("#btnAdd").click(function () {
+        let rec = JSON.stringify({
+            dataIscrizione: $('#dataIscrizione').val(),
+            idCorso: $('#idCorso').val(),
+            idAnagrafica: $('#idAnagrafica').val(),
+            statoPagamento: $('#statoPagamento').val()});
+        $.ajax({
+            type:"POST",
+            url: "http://localhost:8080/corso/save",
+          data: rec,
+          success: function (data) {
+            let messaggio = data.msg;
+            $("#esito").text(messaggio);
+          },
+          error: function () {
+            console.log("Errore" + e);
+          },
+          contentType: "application/json"
+        });
+      });
     })
