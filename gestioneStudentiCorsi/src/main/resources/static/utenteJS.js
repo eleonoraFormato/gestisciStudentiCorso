@@ -73,7 +73,7 @@ function modifica(id, eMail, password, idAnagrafica, tipoUtente) {
     console.log(rec);
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/anagrafica/save",
+      url: "http://localhost:8080/utente/save",
       data: rec,
       success: function (data) {
         let messaggio = data.msg;

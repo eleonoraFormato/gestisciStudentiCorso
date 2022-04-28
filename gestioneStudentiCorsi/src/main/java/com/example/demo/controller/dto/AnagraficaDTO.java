@@ -60,6 +60,7 @@ public class AnagraficaDTO {
 	
 	public static Anagrafica cambiaTipoFromDto (AnagraficaDTO anagraficaDto) {
 		Anagrafica anagrafica = new Anagrafica();
+		anagrafica.setId(anagraficaDto.getId());
 		anagrafica.setNome(anagraficaDto.getNome());
 		anagrafica.setCognome(anagraficaDto.getCognome());
 		anagrafica.setDob(anagraficaDto.getDob());

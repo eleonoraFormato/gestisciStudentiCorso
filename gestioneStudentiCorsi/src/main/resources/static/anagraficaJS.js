@@ -63,6 +63,7 @@ function modifica(id, nome, cognome, dob, cf) {
   $("#codiceFiscale").val(cf);
 
   $("#btnMod").click(function () {
+    $("#esito").text(id);
     let rec = JSON.stringify({
       id: id,
       nome: $("#nome").val(),

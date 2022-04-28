@@ -72,7 +72,7 @@ function modifica(id, dataIscrizione, idCorso, idAnagrafica, statoPagamento) {
     console.log(rec);
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/anagrafica/save",
+      url: "http://localhost:8080/studente/save",
       data: rec,
       success: function (data) {
         let messaggio = data.msg;

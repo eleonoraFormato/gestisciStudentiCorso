@@ -24,20 +24,27 @@ public class SrvAnagraficaImpl implements SrvAnagrafica {
 	@Override
 	public Response<AnagraficaDTO> create(AnagraficaDTO anagraficaDto) {
 		Response<AnagraficaDTO> response = new Response<>();
+
 		try {
+			Anagrafica anagrafica = AnagraficaDTO.cambiaTipoFromDto(anagraficaDto);
 			if (anagraficaDto.getCodiceFiscale().length() == 16) {
-				Anagrafica anagrafica = AnagraficaDTO.cambiaTipoFromDto(anagraficaDto);
-				if (this.repAnagrafica.findByCodiceFiscale(anagraficaDto.getCodiceFiscale()) == null) {
-					response.setData(AnagraficaDTO.cambiaTipoToDto(this.repAnagrafica.save(anagrafica)));
-					response.setMsg("Caricamento Anagrafica riuscito con successo!");
+
+				if (anagraficaDto.getId() != null && anagraficaDto.getId() > 0) {
+					response.setMsg("Modifica Anagrafica riuscita con successo!");
+				} else {
+					if (this.repAnagrafica.findByCodiceFiscale(anagraficaDto.getCodiceFiscale()) == null) {
+						response.setMsg("Caricamento Anagrafica riuscito!");
+					} else {
+						response.setMsg("Codice Fiscale già inserito, riprova!");
+					}
 				}
 
-				else {
-					response.setMsg("Caricamento non riuscito: Codice Fiscale già inserito!");
-				}
 			} else {
 				response.setMsg("Codice Fiscale inserito non valido, riprova!");
 			}
+
+			response.setData(AnagraficaDTO.cambiaTipoToDto(this.repAnagrafica.save(anagrafica)));
+
 		} catch (Exception e) {
 			response.setMsg("Ops! Qualcosa è andato storto " + e.getMessage());
 

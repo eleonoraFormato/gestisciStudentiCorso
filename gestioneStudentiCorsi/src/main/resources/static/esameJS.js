@@ -72,7 +72,7 @@ function modifica(id, voto, idStudente, idMateria, idCorso) {
     console.log(rec);
     $.ajax({
       type: "POST",
-      url: "http://localhost:8080/anagrafica/save",
+      url: "http://localhost:8080/esame/save",
       data: rec,
       success: function (data) {
         let messaggio = data.msg;
